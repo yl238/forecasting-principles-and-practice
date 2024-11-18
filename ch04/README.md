@@ -1,0 +1,2 @@
+# Chapter 4 Time series features
+We can compute many different features on many different time series, and use them to explore the properties of the series. In this chapter we will look at some features that have been found useful in time series exploration, and how they can be used to uncover interesting information about your data. We will use Australian quarterly tourism as a running example (previously discussed in Section 2.5).
