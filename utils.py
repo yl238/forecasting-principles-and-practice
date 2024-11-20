@@ -1,5 +1,15 @@
+import warnings
+
+warnings.filterwarnings("ignore")
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import scipy.stats as stats
+import seaborn as sns
+import statsmodels.api as sm
+from plotnine import aes, geom_line, ggplot, labs, theme
+
+sns.set(font_scale=1.0)
 
 
 def summarize(gb, f):
@@ -48,3 +58,17 @@ def compute_accuracy(y_test, models):
         },
         index=[f.__name__ for f in metrics_fns],
     ).T
+
+
+def summarize_holt(fitted):
+    output = pd.DataFrame(
+        dict(
+            actual=fitted.data.orig_endog,
+            level=fitted.level,
+            trend=fitted.trend,
+            season=fitted.season,
+            forecast=fitted.fittedvalues,
+            remainder=fitted.resid,
+        )
+    )
+    return output
