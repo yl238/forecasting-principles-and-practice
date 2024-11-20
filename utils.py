@@ -13,3 +13,10 @@ def compute(df, f):
     if dropcols:
         df = df.drop(columns=dropcols)
     return df.join(newdf)
+
+
+def set_freq(df, freq=None):
+    """Set frequency of DateTimeIndex."""
+    if freq is None:
+        freq = pd.infer_freq(df.index)
+    return df.asfreq(freq)
