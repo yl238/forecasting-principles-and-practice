@@ -60,7 +60,7 @@ def compute_accuracy(y_test, models):
     ).T
 
 
-def summarize_holt(fitted):
+def summarize_ets(fitted):
     output = pd.DataFrame(
         dict(
             actual=fitted.data.orig_endog,
@@ -72,3 +72,10 @@ def summarize_holt(fitted):
         )
     )
     return output
+
+
+def ciclean(ci_df):
+    """Clean up conf_int() result column names."""
+    ci_df = ci_df.copy()
+    ci_df.columns = "lower", "upper"
+    return ci_df
