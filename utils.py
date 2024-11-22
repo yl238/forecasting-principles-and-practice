@@ -4,12 +4,14 @@ warnings.filterwarnings("ignore")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import rdatasets
 import scipy.stats as stats
 import seaborn as sns
 import statsmodels.api as sm
 from plotnine import aes, geom_line, ggplot, labs, theme
 
 sns.set(font_scale=1.0)
+plt.rcParams["lines.linewidth"] = 1.0
 
 
 def summarize(gb, f):
