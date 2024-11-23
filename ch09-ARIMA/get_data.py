@@ -73,3 +73,5 @@ a10 = (
     .reset_index()
     .set_index("Month", drop=False)
 )
+
+us_employment = pd.read_csv("../data/fpp3/us_employment.csv", parse_dates=["Month"])
