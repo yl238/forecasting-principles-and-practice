@@ -20,5 +20,5 @@ ARIMA models are specified by three order parameters: $(p, d, q)$, where
 - **SARIMA**: Seasonal ARIMA (when the time series has seasonal patterns)
 - **SARIMAX**: Seasonal ARIMA with exogenous variables
 
-#### ARIMA model in words
+### ARIMA model in words
 Predicted $y_t$ equals a constant plus linear combinations of the lags of $Y$ (up to $p$ lags) plus linear combination of lagged forecast errors (up to $q$ lags).
