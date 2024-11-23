@@ -25,9 +25,9 @@ housing = (
     .set_index("date")[["Count"]]
 )
 
+global_economy = pd.read_csv("../data/tsibbledata/global_economy.csv")
 us_econ = (
-    pd.read_csv("../data/tsibbledata/global_economy.csv")
-    .query("Code == 'USA'")
+    global_economy.query("Code == 'USA'")
     .assign(date=lambda df: pd.to_datetime(df.Year, format="%Y"))
     .set_index("date")
 )

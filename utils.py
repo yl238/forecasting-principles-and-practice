@@ -9,6 +9,7 @@ import scipy.stats as stats
 import seaborn as sns
 import statsmodels.api as sm
 from plotnine import aes, geom_line, ggplot, labs, theme
+from sklearn import metrics
 
 sns.set(font_scale=1.0)
 plt.rcParams["lines.linewidth"] = 1.0
@@ -81,3 +82,18 @@ def ciclean(ci_df):
     ci_df = ci_df.copy()
     ci_df.columns = "lower", "upper"
     return ci_df
+
+
+def model_evaluation(y_true, y_pred, Model):
+
+    def mean_absolute_percentage_error(y_true, y_pred):
+        y_true, y_pred = np.array(y_true), np.array(y_pred)
+        return np.mean(np.abs((y_true - y_pred) / y_true)) * 100
+
+    print(f"Model Evaluation: {Model}")
+    print(f"MSE is : {metrics.mean_squared_error(y_true, y_pred)}")
+    print(f"MAE is : {metrics.mean_absolute_error(y_true, y_pred)}")
+    print(f"RMSE is : {np.sqrt(metrics.mean_squared_error(y_true, y_pred))}")
+    print(f"MAPE is : {mean_absolute_percentage_error(y_true, y_pred)}")
+    print(f"R2 is : {metrics.r2_score(y_true, y_pred)}")
+    print(f"corr is : {np.corrcoef(y_true, y_pred)[0,1]}", end="\n\n")

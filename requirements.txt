@@ -4,3 +4,4 @@ scipy==1.14.1
 statsmodels==0.14.4
 rdatasets==0.2.10
 openpyxl==3.1.5
+statsforecast==1.7.8
