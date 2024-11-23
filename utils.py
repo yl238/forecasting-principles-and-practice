@@ -8,8 +8,10 @@ import rdatasets
 import scipy.stats as stats
 import seaborn as sns
 import statsmodels.api as sm
-from plotnine import aes, geom_line, ggplot, labs, theme
+from matplotlib.gridspec import GridSpec
+from plotnine import aes, facet_grid, geom_line, ggplot, labs, theme
 from sklearn import metrics
+from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
 
 sns.set(font_scale=1.0)
 plt.rcParams["lines.linewidth"] = 1.0
@@ -85,7 +87,6 @@ def ciclean(ci_df):
 
 
 def model_evaluation(y_true, y_pred, Model):
-
     def mean_absolute_percentage_error(y_true, y_pred):
         y_true, y_pred = np.array(y_true), np.array(y_pred)
         return np.mean(np.abs((y_true - y_pred) / y_true)) * 100
@@ -97,3 +98,49 @@ def model_evaluation(y_true, y_pred, Model):
     print(f"MAPE is : {mean_absolute_percentage_error(y_true, y_pred)}")
     print(f"R2 is : {metrics.r2_score(y_true, y_pred)}")
     print(f"corr is : {np.corrcoef(y_true, y_pred)[0,1]}", end="\n\n")
+
+
+def plot_autocorrelations(
+    df, lags=np.r_[1:30], figsize=(12, 8), freq="M", ylabel=None
+):
+    """Plot the value, ACF and PACF on a single figure."""
+    # Create the figure
+    fig = plt.figure(figsize=figsize)
+
+    # Define the GridSpec layout: 2 rows, 2 columns
+    gs = GridSpec(2, 2, height_ratios=[1, 1])  # Top row is taller
+
+    # Add the full-width plot at the top
+    ax_top = fig.add_subplot(gs[0, :])  # Span all columns in the top row
+    df.plot(ax=ax_top)
+    ax_top.set(ylabel=ylabel)
+
+    # Add the ACF plot on the bottom left
+    ax_acf = fig.add_subplot(gs[1, 0])  # Bottom left plot
+    plot_acf(df, lags=lags, ax=ax_acf)
+    ax_acf.set(ylabel="ACF", xlabel=f"lag [1{freq}]")
+
+    # Add the PACF plot on the bottom right
+    ax_pacf = fig.add_subplot(gs[1, 1])
+    plot_pacf(df, lags=lags, ax=ax_pacf)
+    ax_pacf.set(ylabel="PACF", xlabel=f"lag [1{freq}]")
+
+    plt.tight_layout()
+    plt.show()
+
+
+def plot_residuals(residuals, lags=24):
+    fig, axs = plt.subplots(nrows=2, ncols=2, figsize=(15, 8))
+    residual.plot(ax=axs[0, 0])
+    axs[0, 0].set_title("Residuals")
+
+    sns.distplot(residual, ax=axs[0, 1])
+    axs[0, 1].set_title("Density plot - Residual")
+
+    stats.probplot(residual["residual"], dist="norm", plot=axs[1, 0])
+    axs[1, 0].set_title("Plot Q-Q")
+
+    plot_acf(residual, lags=np.r_[1 : lags + 1], ax=axs[1, 1])
+    axs[1, 1].set_title("Autocorrelation")
+
+    plt.show()
