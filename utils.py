@@ -15,6 +15,7 @@ from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
 
 sns.set(font_scale=1.0)
 plt.rcParams["lines.linewidth"] = 1.0
+plt.rcParams["figure.figsize"] = (18, 7)
 
 
 def summarize(gb, f):
@@ -101,7 +102,7 @@ def model_evaluation(y_true, y_pred, Model):
 
 
 def plot_autocorrelations(
-    df, lags=np.r_[1:30], figsize=(12, 8), freq="M", ylabel=None
+    df, lags=np.r_[1:30], figsize=(12, 8), freq="M", ylabel=None, title=None
 ):
     """Plot the value, ACF and PACF on a single figure."""
     # Create the figure
@@ -113,7 +114,7 @@ def plot_autocorrelations(
     # Add the full-width plot at the top
     ax_top = fig.add_subplot(gs[0, :])  # Span all columns in the top row
     df.plot(ax=ax_top)
-    ax_top.set(ylabel=ylabel)
+    ax_top.set(ylabel=ylabel, title=title)
 
     # Add the ACF plot on the bottom left
     ax_acf = fig.add_subplot(gs[1, 0])  # Bottom left plot
