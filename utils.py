@@ -130,18 +130,39 @@ def plot_autocorrelations(
     plt.show()
 
 
-def plot_residuals(residuals, lags=24):
-    fig, axs = plt.subplots(nrows=2, ncols=2, figsize=(15, 8))
-    residual.plot(ax=axs[0, 0])
-    axs[0, 0].set_title("Residuals")
+def plot_fitted_residuals(fit, lags=24, figsize=(18, 15)):
+    results = pd.DataFrame(fit.resid)
+    results["orig"] = fit.model.endog.flatten()
+    results["fitted"] = fit.fittedvalues
 
-    sns.distplot(residual, ax=axs[0, 1])
-    axs[0, 1].set_title("Density plot - Residual")
+    results.columns = ["residual", "Target", "Fitted"]
 
-    stats.probplot(residual["residual"], dist="norm", plot=axs[1, 0])
-    axs[1, 0].set_title("Plot Q-Q")
+    fig = plt.figure(
+        figsize=figsize,
+    )
 
-    plot_acf(residual, lags=np.r_[1 : lags + 1], ax=axs[1, 1])
-    axs[1, 1].set_title("Autocorrelation")
+    gs = GridSpec(3, 2, height_ratios=[1, 1, 1])
 
+    # Add the full-width plot at the top
+    ax_top = fig.add_subplot(gs[0, :])
+    results[["Target", "Fitted"]].plot(ax=ax_top)
+
+    ax = fig.add_subplot(gs[1, 0])
+    results["residual"].plot(ax=ax)
+    ax.set_title("Residuals")
+
+    ax = fig.add_subplot(gs[1, 1])
+    sns.distplot(results["residual"], ax=ax)
+    ax.set_title("Density plot - Residual")
+
+    ax = fig.add_subplot(gs[2, 0])
+    stats.probplot(results["residual"], dist="norm", plot=ax)
+    ax.set_title("Plot Q-Q")
+
+    ax = fig.add_subplot(gs[2, 1])
+    plot_acf(results["residual"], lags=np.r_[1 : lags + 1], ax=ax)
+    ax.set(title="Autocorrelation", xlabel='lag')
+    ax.autoscale(axis='y')
+
+    plt.tight_layout()
     plt.show()
