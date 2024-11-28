@@ -1,6 +1,5 @@
 import warnings
 
-warnings.filterwarnings("ignore")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -17,6 +16,7 @@ sns.set(font_scale=1.0)
 plt.rcParams["lines.linewidth"] = 1.0
 plt.rcParams["figure.figsize"] = (18, 7)
 
+warnings.filterwarnings("ignore")
 
 def summarize(gb, f):
     """Summarize grouped things."""
@@ -161,8 +161,8 @@ def plot_fitted_residuals(fit, lags=24, figsize=(18, 15)):
 
     ax = fig.add_subplot(gs[2, 1])
     plot_acf(results["residual"], lags=np.r_[1 : lags + 1], ax=ax)
-    ax.set(title="Autocorrelation", xlabel='lag')
-    ax.autoscale(axis='y')
+    ax.set(title="Autocorrelation", xlabel="lag")
+    ax.autoscale(axis="y")
 
     plt.tight_layout()
     plt.show()
